@@ -119,7 +119,6 @@ Python, pandas, NumPy, Streamlit, Plotly, DuckDB, MySQL 8, SQLAlchemy, Google Ge
 ## Project structure
 
 ```
-sql/                    numbered SQL queries (cleaning, then the 8 business questions)
 dashboard/
   app.py                Streamlit app
   requirements.txt
