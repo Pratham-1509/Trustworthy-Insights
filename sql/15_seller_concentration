@@ -1,0 +1,22 @@
+WITH seller_revenue AS (
+    SELECT oi.seller_id, SUM(oi.price) AS revenue
+    FROM order_items oi
+    JOIN orders o ON o.order_id = oi.order_id
+    WHERE o.order_status <> 'canceled'
+    GROUP BY oi.seller_id
+),
+ranked AS (
+    SELECT seller_id, revenue,
+           NTILE(100) OVER (ORDER BY revenue DESC) AS percentile_group
+    FROM seller_revenue
+)
+SELECT CASE WHEN percentile_group = 1 THEN 'top 1%'
+            WHEN percentile_group <= 5 THEN 'top 2-5%'
+            WHEN percentile_group <= 10 THEN 'top 6-10%'
+            ELSE 'bottom 90%' END AS seller_group,
+       COUNT(*) AS sellers,
+       ROUND(SUM(revenue), 2) AS revenue,
+       ROUND(100 * SUM(revenue) / SUM(SUM(revenue)) OVER (), 2) AS pct_of_revenue
+FROM ranked
+GROUP BY seller_group
+ORDER BY MIN(percentile_group);

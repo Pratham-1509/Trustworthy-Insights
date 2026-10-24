@@ -1,0 +1,14 @@
+SELECT c.customer_state AS state,
+       COUNT(*) AS items,
+       ROUND(AVG(DATEDIFF(o.order_delivered_customer_date, o.order_purchase_timestamp)), 1) AS avg_days,
+       ROUND(100 * AVG(o.order_delivered_customer_date > o.order_estimated_delivery_date), 2) AS pct_late
+FROM order_items oi
+JOIN orders o ON o.order_id = oi.order_id
+JOIN customers c ON c.customer_id = o.customer_id
+JOIN sellers s ON s.seller_id = oi.seller_id
+WHERE s.seller_state = 'SP'
+  AND o.order_status = 'delivered'
+  AND o.order_delivered_customer_date IS NOT NULL
+GROUP BY c.customer_state
+HAVING COUNT(*) >= 300
+ORDER BY avg_days;

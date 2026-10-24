@@ -1,0 +1,21 @@
+WITH order_scores AS (
+    SELECT order_id, AVG(review_score) AS score
+    FROM order_reviews
+    GROUP BY order_id
+)
+SELECT oi.seller_id,
+       s.seller_state,
+       COUNT(DISTINCT oi.order_id) AS orders,
+       ROUND(SUM(oi.price), 2) AS revenue,
+       ROUND(AVG(sc.score), 2) AS avg_review,
+       ROUND(100 * AVG(o.order_delivered_customer_date > o.order_estimated_delivery_date), 2) AS pct_late
+FROM order_items oi
+JOIN orders o ON o.order_id = oi.order_id
+JOIN sellers s ON s.seller_id = oi.seller_id
+LEFT JOIN order_scores sc ON sc.order_id = oi.order_id
+WHERE o.order_status = 'delivered'
+  AND o.order_delivered_customer_date IS NOT NULL
+GROUP BY oi.seller_id, s.seller_state
+HAVING COUNT(DISTINCT oi.order_id) >= 30
+ORDER BY revenue DESC
+LIMIT 15;

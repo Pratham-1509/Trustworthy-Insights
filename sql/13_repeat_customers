@@ -1,0 +1,20 @@
+WITH customer_orders AS (
+    SELECT c.customer_unique_id,
+           COUNT(DISTINCT o.order_id) AS orders,
+           SUM(oi.price) AS spend
+    FROM customers c
+    JOIN orders o ON o.customer_id = c.customer_id
+    JOIN order_items oi ON oi.order_id = o.order_id
+    WHERE o.order_status <> 'canceled'
+    GROUP BY c.customer_unique_id
+)
+SELECT CASE WHEN orders = 1 THEN '1 order'
+            WHEN orders = 2 THEN '2 orders'
+            ELSE '3+ orders' END AS segment,
+       COUNT(*) AS customers,
+       ROUND(100 * COUNT(*) / SUM(COUNT(*)) OVER (), 2) AS pct_customers,
+       ROUND(SUM(spend), 2) AS revenue,
+       ROUND(100 * SUM(spend) / SUM(SUM(spend)) OVER (), 2) AS pct_revenue
+FROM customer_orders
+GROUP BY segment
+ORDER BY MIN(orders);

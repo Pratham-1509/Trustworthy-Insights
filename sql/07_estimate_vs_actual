@@ -1,0 +1,5 @@
+SELECT ROUND(AVG(DATEDIFF(order_estimated_delivery_date, order_purchase_timestamp)), 1) AS avg_promised_days,
+       ROUND(AVG(DATEDIFF(order_delivered_customer_date, order_purchase_timestamp)), 1) AS avg_actual_days
+FROM orders
+WHERE order_status = 'delivered'
+  AND order_delivered_customer_date IS NOT NULL;

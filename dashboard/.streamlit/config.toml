@@ -1,0 +1,10 @@
+[theme]
+base = "light"
+primaryColor = "#4F46E5"
+backgroundColor = "#F5F7FF"
+secondaryBackgroundColor = "#E0E7FF"
+textColor = "#1E1B4B"
+
+# Bigger text (Streamlit's default is 16)
+baseFontSize = 18
+headingFontSizes = ["44px", "34px", "26px", "22px", "19px", "17px"]

@@ -1,0 +1,13 @@
+SELECT c.customer_state AS state,
+       COUNT(DISTINCT o.order_id) AS orders,
+       COUNT(DISTINCT c.customer_unique_id) AS customers,
+       ROUND(SUM(oi.price), 2) AS product_revenue,
+       ROUND(SUM(oi.price) / COUNT(DISTINCT o.order_id), 2) AS revenue_per_order,
+       ROUND(100 * SUM(oi.price) / SUM(SUM(oi.price)) OVER (), 2) AS pct_of_total
+FROM orders o
+JOIN customers c ON c.customer_id = o.customer_id
+JOIN order_items oi ON oi.order_id = o.order_id
+WHERE o.order_status <> 'canceled'
+GROUP BY c.customer_state
+ORDER BY product_revenue DESC
+LIMIT 10;

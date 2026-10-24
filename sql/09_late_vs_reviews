@@ -1,0 +1,14 @@
+WITH order_scores AS (
+    SELECT order_id, AVG(review_score) AS score
+    FROM order_reviews
+    GROUP BY order_id
+)
+SELECT CASE WHEN o.order_delivered_customer_date > o.order_estimated_delivery_date
+            THEN 'late' ELSE 'on_time' END AS delivery,
+       COUNT(*) AS orders,
+       ROUND(AVG(s.score), 2) AS avg_review_score
+FROM orders o
+JOIN order_scores s ON s.order_id = o.order_id
+WHERE o.order_status = 'delivered'
+  AND o.order_delivered_customer_date IS NOT NULL
+GROUP BY delivery;
