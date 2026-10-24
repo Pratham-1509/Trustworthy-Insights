@@ -1,7 +1,0 @@
-SELECT COUNT(*) AS delivered_orders,
-       SUM(order_delivered_customer_date > order_estimated_delivery_date) AS late_orders,
-       ROUND(100 * AVG(order_delivered_customer_date > order_estimated_delivery_date), 2) AS pct_late,
-       ROUND(AVG(DATEDIFF(order_delivered_customer_date, order_purchase_timestamp)), 1) AS avg_days_to_deliver
-FROM orders
-WHERE order_status = 'delivered'
-  AND order_delivered_customer_date IS NOT NULL;
