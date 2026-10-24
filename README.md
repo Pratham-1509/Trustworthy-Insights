@@ -1,3 +1,5 @@
+<p align="center"><img src="dashboard/assets/logo.png" alt="Trustworthy Insights" width="420"></p>
+
 # Trustworthy Insights
 
 **Upload any CSV or Excel files and get profiled, charted insights, where every number in the AI-written summary is checked against the data.**
@@ -85,8 +87,6 @@ The demo dataset is the [Brazilian E-Commerce Public Dataset by Olist](https://w
 7. How many customers buy more than once?
 8. How concentrated is seller revenue, and which top sellers have weak reviews or late deliveries?
 
-SQL techniques used: multi-table JOINs, CTEs, window functions (`RANK`, `SUM() OVER`, running totals, `NTILE`), conditional aggregation, `HAVING`, type cleaning, keys and indexes.
-
 ### Key findings
 
 - **Growth came from order volume and flattened in 2018.** Monthly orders grew from 797 (Jan 2017) to 6,428 (Aug 2018), about 8x, peaking at 7,507 in Nov 2017. Order value stayed around R$155 to R$175. The first and last months are incomplete and were excluded.
@@ -96,7 +96,6 @@ SQL techniques used: multi-table JOINs, CTEs, window functions (`RANK`, `SUM() O
 - **Late delivery goes with much lower reviews.** On-time orders average 4.29 stars and late orders 2.57. This is a correlation, not proof of cause.
 - **Credit cards dominate payments** at 78.44% of payment value, with 3.5 installments on average.
 - **Repeat purchasing is rare.** 96.96% of customers ordered once (the data spans about two years, so this is probably understated).
-- **Sellers:** _add your seller-concentration result here._
 
 ### Data-quality notes
 
@@ -125,7 +124,6 @@ dashboard/
   app.py                Streamlit app
   requirements.txt
   sample_data/          small demo dataset (Olist sample)
-load_data.py            loads the full Olist CSVs into MySQL
 make_sample_data.py     builds sample_data/ from the full files
 ```
 
